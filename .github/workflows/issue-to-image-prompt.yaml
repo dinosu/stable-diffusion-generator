@@ -1,0 +1,24 @@
+name: Issue to image
+run-name: Generating image for "${{ github.event.issue.title }}"
+on:
+  issues:
+    types:
+      - opened
+jobs:
+  generate-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "The title of the issue is.. ${{ github.event.issue.title }}"
+      - name: Prompt
+        run: |
+          python scripts/get-prompt.py "${{ github.event.issue.title }}"
+      - name: Mode
+        run: |
+          python scripts/get-mode.py "${{ github.event.issue.title }}"
